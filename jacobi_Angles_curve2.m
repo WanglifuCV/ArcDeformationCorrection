@@ -1,0 +1,16 @@
+function J=jacobi_Angles_curve2(du, dv,XData, YData, tau,~)
+R=tau(1);
+theta = tau(2);
+h = tau(3);
+[m, n]=size(du);
+[X0, Y0]=meshgrid(XData(1):XData(2), YData(1):YData(2));
+J=zeros(m, n,3);
+dUdR = 1 + cos( Y0/R ).*( sin(theta)*Y0/R - 1 ) - sin(Y0/R).*( sin( theta ) + Y0/R );
+dVdR = cos(theta)*(sin(Y0/R)-Y0.*cos(Y0/R)/R);
+dUdTheta = -R*sin(Y0/R)*cos(theta);
+dVdTheta = -R*sin(Y0/R)*sin(theta);
+dUdH = 0;
+dVdH = 1;
+J(:,:,1)=du.*dUdR+dv.*dVdR;       
+J(:,:,2)=du.*dUdTheta + dv.*dVdTheta;
+J(:,:,3)=du.*dUdH + dv.*dVdH;
